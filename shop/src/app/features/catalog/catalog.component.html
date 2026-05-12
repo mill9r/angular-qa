@@ -1,0 +1,18 @@
+<main class="catalog">
+  <div class="catalog__header">
+    <h1>Catalog</h1>
+    <button class="btn btn--primary" (click)="goToCheckout()">Checkout</button>
+  </div>
+
+  @if (catalogService.loading()) {
+    <div class="catalog__status">Loading products…</div>
+  } @else if (products().length === 0) {
+    <div class="catalog__status">No products available.</div>
+  } @else {
+    <div class="catalog__grid">
+      @for (product of products(); track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+  }
+</main>

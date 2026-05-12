@@ -1,0 +1,42 @@
+<main class="checkout">
+  <h1>Checkout</h1>
+
+  @if (cartService.items().length === 0) {
+    <div class="checkout__empty">
+      <p>Your cart is empty.</p>
+      <a routerLink="/catalog" class="btn btn--primary">Back to Catalog</a>
+    </div>
+  } @else {
+    <div class="checkout__items">
+      @for (item of cartService.items(); track item.product.id) {
+        <div class="checkout__row">
+          <img [src]="item.product.imageUrl" [alt]="item.product.name" class="checkout__img" />
+          <div class="checkout__info">
+            <span class="checkout__name">{{ item.product.name }}</span>
+            <span class="checkout__qty">Qty: {{ item.quantity }}</span>
+          </div>
+          <span class="checkout__line-total">{{ formatPrice(item.product.price * item.quantity) }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="checkout__total">
+      Total: <strong>{{ formatPrice(cartService.total()) }}</strong>
+    </div>
+
+    <div class="checkout__actions">
+      <button class="btn btn--primary" (click)="pay()">Pay</button>
+      <button class="btn btn--secondary" (click)="showCancelConfirm.set(true)">Cancel</button>
+    </div>
+
+    @if (showCancelConfirm()) {
+      <div class="checkout__confirm">
+        <p>Do you want to cancel order?</p>
+        <div class="checkout__confirm-actions">
+          <button class="btn btn--danger" (click)="confirmCancel()">Yes</button>
+          <button class="btn btn--secondary" (click)="showCancelConfirm.set(false)">No</button>
+        </div>
+      </div>
+    }
+  }
+</main>
